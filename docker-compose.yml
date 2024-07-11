@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    ports:
+      - 5432:5432
+    volumes:
+      - .:/tmp
+      - ./backup-banco:/backup-banco
+    environment:
+      - POSTGRES_PASSWORD=senha1
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=laravelteste
+  php:
+    build: .
+    ports:
+      - "80:80"
+      - "444:443"
+    volumes:
+      - .:/var/www/html/
+    environment:
+      APP_ENV: local
+    depends_on:
+      - postgres
